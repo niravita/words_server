@@ -19,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import com.lemon.words.model.WordOccurrences;
@@ -70,7 +71,7 @@ public class WordService {
 	
 	
 	// Toggling persist on save on\off (see saveMapToDisk() comments for more information)
-	private static boolean persistOnUpdate = true; 
+	private static boolean persistOnUpdate = false; 
 	
 	
 	/**
@@ -195,8 +196,11 @@ public class WordService {
 	 * @return
 	 */
 	private String[] stripLineForWordsAndSpaces(String lineString) {
-		return lineString.replaceAll(MINUS_SIGN, WHITE_SPACE).replaceAll(ONLY_ALPHABETIC_REGEX, EMPTY_STRING).split(WHITE_SPACE);
+		lineString = StringUtils.replace(lineString, MINUS_SIGN, WHITE_SPACE);
+		lineString = StringUtils.replace(lineString, ONLY_ALPHABETIC_REGEX, EMPTY_STRING);
+		return lineString.split(WHITE_SPACE);
 	}
+
 
 	/**
 	 * Here we update a given word into our sorted array.
