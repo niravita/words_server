@@ -71,7 +71,7 @@ public class WordService {
 	
 	
 	// Toggling persist on save on\off (see saveMapToDisk() comments for more information)
-	private static boolean persistOnUpdate = false; 
+	private static boolean persistOnUpdate = true; 
 	
 	
 	/**
