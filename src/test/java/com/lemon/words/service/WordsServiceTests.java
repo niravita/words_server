@@ -1,5 +1,6 @@
 package com.lemon.words.service;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,8 +12,10 @@ class WordsServiceTests {
 	private WordService wordService;
 
 	@Test
-	public void post_words_with_no_valid_type() throws Exception {
-		this.wordService.postWords("non-existing-type", "some data");
+	public void postWords_illegal_type_exception() throws Exception {
+		Assertions.assertThrows(IllegalStateException.class, () -> {
+			this.wordService.postWords("non-existing-type", "some data");
+		});
 	}
 
 }

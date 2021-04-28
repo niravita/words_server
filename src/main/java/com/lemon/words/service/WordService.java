@@ -115,7 +115,7 @@ public class WordService {
 			handlePostFile(data);
 			break;
 		default:
-			break;
+			throw new IllegalStateException();
 		}
 		if (persistOnUpdate) {
 			saveMapToDisk();
