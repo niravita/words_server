@@ -19,7 +19,6 @@ class WordsServiceTests {
 	 * rename it instead (to avoid data loss)
 	 * 
 	 * And cleaning the data structures using 'clear()' method
-	 * 
 	 * @throws Exception
 	 * 
 	 */
