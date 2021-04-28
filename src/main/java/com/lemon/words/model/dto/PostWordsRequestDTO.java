@@ -12,6 +12,12 @@ public class PostWordsRequestDTO {
 		super();
 	}
 
+	public PostWordsRequestDTO(String type, String data) {
+		super();
+		this.type = type;
+		this.data = data;
+	}
+
 	public String getType() {
 		return type;
 	}
