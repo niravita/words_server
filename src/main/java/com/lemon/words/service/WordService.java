@@ -62,7 +62,7 @@ public class WordService {
 	private static final String WHITE_SPACE = " ";
 	private static final String MINUS_SIGN = "-";
 	private static final String ONLY_ALPHABETIC_REGEX = "[^a-zA-Z ]";
-	private static final String STATE_FILENAME = "state.txt";
+	public static final String STATE_FILENAME = "state.txt";
 	private static final String FILE_TYPE = "file";
 	private static final String URL_TYPE = "url";
 	private static final String STRING_TYPE = "string";
@@ -356,4 +356,18 @@ public class WordService {
 			}
 		}
 	}
+
+	/**
+	 * a method that allows clearing the state and the data structures
+	 * 
+	 * @throws Exception
+	 */
+	public void clear() throws Exception {
+		File f = new File(STATE_FILENAME);
+		if (f.exists()) {
+			f.delete();
+		}
+		init();
+	}
+
 }
