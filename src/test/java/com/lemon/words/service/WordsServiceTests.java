@@ -45,9 +45,9 @@ class WordsServiceTests {
 	@Test
 	public void postWords_string_file_sanity_case() throws Exception {
 		this.wordService.postWords("file", "testfile.txt");
-		List<String> wordRankingResultArray = this.wordService.getWordRanking("1,2");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("2,3");
 		Assertions.assertEquals(wordRankingResultArray.size(), 2);
-		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
+		Assertions.assertEquals(wordRankingResultArray.get(1), "three");
 	}
 
 }
