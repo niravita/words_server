@@ -1,5 +1,7 @@
 package com.lemon.words.service;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,14 @@ class WordsServiceTests {
 		Assertions.assertThrows(IllegalStateException.class, () -> {
 			this.wordService.postWords("non-existing-type", "some data");
 		});
+	}
+
+	@Test
+	public void postWords_string_type_sanity_case() throws Exception {
+		this.wordService.postWords("string", "some data data");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1,2");
+		Assertions.assertEquals(wordRankingResultArray.size(), 2);
+		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
 	}
 
 }
