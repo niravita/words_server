@@ -54,8 +54,7 @@ class WordsServiceTests {
 		WordOccurrences newWo2 = new WordOccurrences(1l, "baa");
 		Assertions.assertTrue(newWo.compareTo(newWo2) > 0);
 	}
-
-
+	
 	@Test
 	public void postWords_illegal_type_exception() throws Exception {
 		Assertions.assertThrows(IllegalStateException.class, () -> {
@@ -64,7 +63,7 @@ class WordsServiceTests {
 	}
 
 	@Test
-	public void postWords_string_type_sanity_case() throws Exception {
+	public void postWords_string_type_sanity() throws Exception {
 		this.wordService.postWords("string", "some data data");
 		List<String> wordRankingResultArray = this.wordService.getWordRanking("1,2");
 		Assertions.assertEquals(wordRankingResultArray.size(), 2);
@@ -78,7 +77,7 @@ class WordsServiceTests {
      *  20-point 
 	 */
 	@Test
-	public void postWords_string_file_sanity_case() throws Exception {
+	public void postWords_string_file_sanity() throws Exception {
 		this.wordService.postWords("file", "testfile.txt");
 		List<String> wordRankingResultArray = this.wordService.getWordRanking("2,3");
 		Assertions.assertEquals(wordRankingResultArray.size(), 2);
@@ -87,7 +86,7 @@ class WordsServiceTests {
 	}
 
 	@Test
-	public void postWords_string_url_sanity_case() throws Exception {
+	public void postWords_string_url_sanity() throws Exception {
 		this.wordService.postWords("url", "https://github.com/dwyl/english-words/raw/master/words.txt");
 		List<String> wordRankingResultArray = this.wordService.getWordRanking("1");
 		Assertions.assertEquals(wordRankingResultArray.size(), 1);
@@ -95,11 +94,29 @@ class WordsServiceTests {
 	}
 	
 	@Test
-	public void postWords_string_type__range_sanity_case() throws Exception {
+	public void words_ranking_range_sanity() throws Exception {
 		this.wordService.postWords("string", "some data data");
 		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-2");
 		Assertions.assertEquals(wordRankingResultArray.size(), 2);
 		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
+	}
+	@Test
+	public void words_ranking_range_and_exact_sanity() throws Exception {
+		this.wordService.postWords("string", "Hi! My name is (what?), my name is (who?), my name is Slim Shady");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-3,4,5");
+		Assertions.assertEquals(wordRankingResultArray.size(), 5);
+		Assertions.assertEquals(wordRankingResultArray.get(0), "is");
+		Assertions.assertEquals(wordRankingResultArray.get(4), "(who?),");
+	}
+	
+	@Test
+	public void words_ranking_request_non_existing_rank() throws Exception {
+		this.wordService.postWords("string", "some data data");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("3-99");
+		Assertions.assertEquals(wordRankingResultArray.size(), 0);
+		wordRankingResultArray = this.wordService.getWordRanking("888");
+		Assertions.assertEquals(wordRankingResultArray.size(), 0);
+		
 	}
 	
 	@Test
@@ -109,6 +126,19 @@ class WordsServiceTests {
 		this.wordService.init();
 		wordRankingResultArray = this.wordService.getWordRanking("1");
 		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
+	}
+
+	/**
+	 * Check cumulative requirement
+	 */
+	@Test
+	public void get_word_ranking_cumulative() throws Exception {
+		this.wordService.postWords("string", "some data data");
+		this.wordService.getWordRanking("1");
+		this.wordService.init();
+		this.wordService.postWords("string", "some some some");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1");
+		Assertions.assertEquals(wordRankingResultArray.get(0), "some");
 	}
 	
 	@Test
