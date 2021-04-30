@@ -172,12 +172,11 @@ public class WordService {
 		String[] wordsInLine = null;
 		try (Scanner sc = new Scanner(inputStream, StandardCharsets.UTF_8)) {
 			while (sc.hasNextLine()) {
-				wordsInLine = stripLineForWordsAndSpaces(sc.nextLine());
+				wordsInLine = stripLineForMidWordsAndSpaces(sc.nextLine());
 				for (String word : wordsInLine) {
-					if (isNullOrEmpty(word)) {
-						continue;
+					if (!isNullOrEmpty(word)) {
+						incrementWordOccurrences(word.toLowerCase());
 					}
-					incrementWordOccurrences(word.toLowerCase());
 				}
 			}
 		}
@@ -194,7 +193,7 @@ public class WordService {
 	 * @param sc
 	 * @return
 	 */
-	private String[] stripLineForWordsAndSpaces(String lineString) {
+	private String[] stripLineForMidWordsAndSpaces(String lineString) {
 		lineString = StringUtils.replace(lineString, MINUS_SIGN, WHITE_SPACE);
 		return lineString.split(WHITE_SPACE);
 	}
