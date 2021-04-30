@@ -342,9 +342,6 @@ public class WordService {
 		File f = new File(STATE_FILENAME);
 		if (f.exists()) {
 			try (FileInputStream fin = new FileInputStream(STATE_FILENAME)) {
-				if (fin.available() == 0) {
-					return;
-				}
 				try (ObjectInputStream ois = new ObjectInputStream(fin)) {
 					occurrencesArray = (List<WordOccurrences>) ois.readObject();
 					for (WordOccurrences wordOccurrences : occurrencesArray) {

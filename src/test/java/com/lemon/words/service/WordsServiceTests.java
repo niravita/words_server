@@ -2,15 +2,19 @@ package com.lemon.words.service;
 
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.lemon.WordsApplication;
 import com.lemon.words.model.WordOccurrences;
 
 @SpringBootTest
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class WordsServiceTests {
 
 	@Autowired
@@ -26,6 +30,7 @@ class WordsServiceTests {
 	 * 
 	 */
 	@BeforeEach
+	@AfterAll
 	public void cleanup() throws Exception {
 		wordService.clear();
 	}
@@ -66,12 +71,19 @@ class WordsServiceTests {
 		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
 	}
 
+	/**
+	 * Using a testfile.txt example here with the following text:
+	 *  2-t
+	 *  45-d
+     *  20-point 
+	 */
 	@Test
 	public void postWords_string_file_sanity_case() throws Exception {
 		this.wordService.postWords("file", "testfile.txt");
 		List<String> wordRankingResultArray = this.wordService.getWordRanking("2,3");
 		Assertions.assertEquals(wordRankingResultArray.size(), 2);
-		Assertions.assertEquals(wordRankingResultArray.get(1), "20");
+		Assertions.assertEquals(wordRankingResultArray.get(0), "20");
+		Assertions.assertEquals(wordRankingResultArray.get(1), "45");
 	}
 
 	@Test
@@ -81,5 +93,26 @@ class WordsServiceTests {
 		Assertions.assertEquals(wordRankingResultArray.size(), 1);
 		Assertions.assertEquals(wordRankingResultArray.get(0), "self");
 	}
-
+	
+	@Test
+	public void postWords_string_type__range_sanity_case() throws Exception {
+		this.wordService.postWords("string", "some data data");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-2");
+		Assertions.assertEquals(wordRankingResultArray.size(), 2);
+		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
+	}
+	
+	@Test
+	public void reusing_existsing_state_on_startup() throws Exception {
+		this.wordService.postWords("string", "some data data");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-2");
+		this.wordService.init();
+		wordRankingResultArray = this.wordService.getWordRanking("1");
+		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
+	}
+	
+	@Test
+	public void applicationContextTest() {
+	    WordsApplication.main(new String[] {});
+	}
 }
