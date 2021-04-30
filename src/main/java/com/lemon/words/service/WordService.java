@@ -61,7 +61,6 @@ public class WordService {
 	// Some constant strings used in the service
 	private static final String WHITE_SPACE = " ";
 	private static final String MINUS_SIGN = "-";
-	private static final String ONLY_ALPHABETIC_REGEX = "[^a-zA-Z ]";
 	public static final String STATE_FILENAME = "state.txt";
 	private static final String FILE_TYPE = "file";
 	private static final String URL_TYPE = "url";
@@ -197,7 +196,6 @@ public class WordService {
 	 */
 	private String[] stripLineForWordsAndSpaces(String lineString) {
 		lineString = StringUtils.replace(lineString, MINUS_SIGN, WHITE_SPACE);
-		lineString = StringUtils.replace(lineString, ONLY_ALPHABETIC_REGEX, EMPTY_STRING);
 		return lineString.split(WHITE_SPACE);
 	}
 
