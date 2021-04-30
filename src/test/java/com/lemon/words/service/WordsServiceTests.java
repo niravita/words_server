@@ -130,8 +130,8 @@ class WordsServiceTests {
 	
 	@Test
 	public void words_ranking_request_non_existing_rank() throws Exception {
-		this.wordService.postWords("string", "some data data");
-		List<String> wordRankingResultArray = this.wordService.getWordRanking("3-99");
+		this.wordService.postWords("string", "well thats all folks");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("7-99");
 		Assertions.assertEquals(wordRankingResultArray.size(), 0);
 		wordRankingResultArray = this.wordService.getWordRanking("888");
 		Assertions.assertEquals(wordRankingResultArray.size(), 0);
@@ -140,11 +140,11 @@ class WordsServiceTests {
 	
 	@Test
 	public void reusing_existsing_state_on_startup() throws Exception {
-		this.wordService.postWords("string", "some data data");
+		this.wordService.postWords("string", "ok bye bye");
 		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-2");
 		this.wordService.init();
 		wordRankingResultArray = this.wordService.getWordRanking("1");
-		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
+		Assertions.assertEquals(wordRankingResultArray.get(0), "bye");
 	}
 
 	/**
