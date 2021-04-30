@@ -100,6 +100,25 @@ class WordsServiceTests {
 		Assertions.assertEquals(wordRankingResultArray.size(), 2);
 		Assertions.assertEquals(wordRankingResultArray.get(0), "data");
 	}
+	
+	@Test
+	public void words_ranking_case_insenitive() throws Exception {
+		this.wordService.postWords("string", "Hi1 You YOU");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-2");
+		Assertions.assertEquals(wordRankingResultArray.size(), 2);
+		Assertions.assertEquals(wordRankingResultArray.get(0), "you");
+		Assertions.assertEquals(wordRankingResultArray.get(1), "hi1");
+	}
+	
+	@Test
+	public void words_ranking_with_mid_word_clean() throws Exception {
+		this.wordService.postWords("string", "mid-word-clean-up-up");
+		List<String> wordRankingResultArray = this.wordService.getWordRanking("1-2");
+		Assertions.assertEquals(wordRankingResultArray.size(), 2);
+		Assertions.assertEquals(wordRankingResultArray.get(0), "up");
+		Assertions.assertEquals(wordRankingResultArray.get(1), "clean");
+	}
+	
 	@Test
 	public void words_ranking_range_and_exact_sanity() throws Exception {
 		this.wordService.postWords("string", "Hi! My name is (what?), my name is (who?), my name is Slim Shady");
